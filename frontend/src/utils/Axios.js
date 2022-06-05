@@ -21,8 +21,6 @@ function Axios() {
     const refreshExpired =
       dayjs.unix(jwt_decode(refresh_token).exp).diff(dayjs()) < 1;
 
-    console.log(refreshExpired);
-
     if (refreshExpired) {
       window.alert("Session Expired, Login Again...");
       window.location.href = "/logout";

@@ -38,21 +38,33 @@ function Login() {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={submitHanler}>
-        <div>
+    <div className="container w-50">
+      <div className="container w-50">
+        <form onSubmit={submitHanler}>
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Enter Mobile Number"
+              name="phone_number"
+              className="form-control"
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              onChange={changeHandler}
+            />
+          </div>
           <input
-            type="text"
-            placeholder="Enter Mobile Number"
-            name="phone_number"
-            onChange={changeHandler}
+            type="submit"
+            value="Login"
+            className=" btn btn-sm btn-primary"
           />
-        </div>
-        <div>
-          <input type="password" name="password" onChange={changeHandler} />
-        </div>
-        <input type="submit" value="Login" />
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

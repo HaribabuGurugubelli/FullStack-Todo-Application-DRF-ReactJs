@@ -33,37 +33,51 @@ function Register() {
   };
 
   return (
-    <div>
-      <form onSubmit={submitHanler}>
-        <div>
+    <div className="container w-50">
+      <div className="container w-50">
+        <form onSubmit={submitHanler}>
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Enter Mobile Number"
+              name="phone_number"
+              className="form-control"
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="email"
+              placeholder="Enter Email"
+              name="email"
+              className="form-control"
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Enter Full Name"
+              name="full_name"
+              className="form-control"
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              onChange={changeHandler}
+            />
+          </div>
           <input
-            type="text"
-            placeholder="Enter Mobile Number"
-            name="phone_number"
-            onChange={changeHandler}
+            type="submit"
+            className=" btn btn-sm btn-warning"
+            value="SignUp"
           />
-        </div>
-        <div>
-          <input
-            type="email"
-            placeholder="Enter Email"
-            name="email"
-            onChange={changeHandler}
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Enter Full Name"
-            name="full_name"
-            onChange={changeHandler}
-          />
-        </div>
-        <div>
-          <input type="password" name="password" onChange={changeHandler} />
-        </div>
-        <input type="submit" value="Login" />
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

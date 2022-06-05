@@ -42,8 +42,6 @@ function AllTodos() {
     todo: "",
   });
 
-  console.log(data);
-
   const todoChangeHandler = (e) => {
     setDodoData("");
     setData({ ...data, [e.target.name]: e.target.value });
@@ -64,6 +62,39 @@ function AllTodos() {
     handleClose();
   };
 
+  const [newTodo, setNewTodo] = useState({
+    todo: "",
+  });
+
+  const ChangeHandler = (e) => {
+    setNewTodo({ ...newTodo, [e.target.name]: e.target.value });
+  };
+
+  const addTodos = async () => {
+    let response = await api.post(`/get_all_tasks/`, { ...newTodo });
+
+    if (response.status === 201) {
+      getTodos();
+    }
+  };
+
+  const SubmitHandle = (e) => {
+    e.preventDefault();
+    addTodos();
+    document.getElementById("todo_form").reset();
+  };
+
+  const [delTodoId, setDelTodoId] = useState("");
+
+  const deleteTodo = async () => {
+    let response = await api.delete(`/get_task_by_id/${delTodoId}/`);
+
+    if (response.status === 200) {
+      getTodos();
+      setDelTodoId("");
+    }
+  };
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -72,7 +103,6 @@ function AllTodos() {
   useEffect(() => {
     if (user) {
       getTodos();
-      console.log("Todos Fetched");
     }
   }, []);
 
@@ -82,8 +112,28 @@ function AllTodos() {
     }
   }, [todoId]);
 
+  useEffect(() => {
+    if (delTodoId) {
+      deleteTodo();
+    }
+  }, [delTodoId]);
+
   return (
     <div>
+      <form onSubmit={SubmitHandle} id="todo_form">
+        <div className="mb-3 d-flex w-50 container">
+          <input
+            type="text"
+            className="form-control mx-2"
+            placeholder="Enter New Todo"
+            name="todo"
+            onChange={ChangeHandler}
+          />
+          <button type="submit" className="btn btn-primary">
+            Add
+          </button>
+        </div>
+      </form>
       <table className="table table-bordered table-striped table-hover">
         <thead>
           <tr>
@@ -108,7 +158,13 @@ function AllTodos() {
                   Update
                 </button>
                 <span className="mx-2"></span>
-                <button type="button" className="btn btn-danger btn-sm">
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm"
+                  onClick={() => {
+                    setDelTodoId(todo.id);
+                  }}
+                >
                   Delete
                 </button>
               </td>
