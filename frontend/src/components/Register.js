@@ -26,6 +26,7 @@ function Register() {
         if (response.status === 200) {
           localStorage.setItem("access", response.data.access);
           localStorage.setItem("refresh", response.data.refresh);
+          window.location.href = "/";
         }
         console.log(response);
       })
