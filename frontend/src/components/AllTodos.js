@@ -16,10 +16,11 @@ function AllTodos() {
   const [todos, setTodos] = useState([]);
 
   const getTodos = async () => {
-    let response = await api.get("/get_all_tasks/");
+    let response = await api.get(`/get_all_tasks/`);
 
     if (response.status === 200) {
       setTodos(response.data);
+      setTodoId("");
     }
   };
 
@@ -32,17 +33,35 @@ function AllTodos() {
 
     if (response.status === 200) {
       setDodoData(response.data);
+      handleShow();
       console.log(response);
     }
   };
 
   const [data, setData] = useState({
-    id: todoId,
     todo: "",
   });
 
+  console.log(data);
+
   const todoChangeHandler = (e) => {
+    setDodoData("");
     setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const updateTodo = async () => {
+    let response = await api.put(`/get_task_by_id/${todoId}/`, { ...data });
+
+    if (response.status === 201) {
+      console.log(response);
+      getTodos();
+    }
+  };
+
+  const UpdateSubmitHandle = (e) => {
+    e.preventDefault();
+    updateTodo();
+    handleClose();
   };
 
   const [show, setShow] = useState(false);
@@ -56,6 +75,12 @@ function AllTodos() {
       console.log("Todos Fetched");
     }
   }, []);
+
+  useEffect(() => {
+    if (todoId) {
+      getTodoById();
+    }
+  }, [todoId]);
 
   return (
     <div>
@@ -78,8 +103,6 @@ function AllTodos() {
                   className="btn btn-warning btn-sm"
                   onClick={() => {
                     setTodoId(todo.id);
-                    getTodoById();
-                    handleShow();
                   }}
                 >
                   Update
@@ -100,7 +123,7 @@ function AllTodos() {
           backdrop="static"
           keyboard={false}
         >
-          <form>
+          <form onSubmit={UpdateSubmitHandle}>
             <Modal.Header closeButton>
               <Modal.Title>Update Todo</Modal.Title>
             </Modal.Header>
