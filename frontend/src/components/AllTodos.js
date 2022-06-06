@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import Axios from "../utils/Axios";
+import UseAxios from "../utils/UseAxios";
 
 function AllTodos() {
   const [user, setUser] = useState(() =>
@@ -11,7 +11,7 @@ function AllTodos() {
       : null
   );
 
-  let api = Axios();
+  let api = UseAxios();
 
   const [todos, setTodos] = useState([]);
 
@@ -134,7 +134,7 @@ function AllTodos() {
           </button>
         </div>
       </form>
-      <table className="table table-bordered table-striped table-hover">
+      <table className="table table-bordered table-striped table-hover w-50 container">
         <thead>
           <tr>
             <th scope="col">S.No</th>
@@ -180,7 +180,13 @@ function AllTodos() {
           keyboard={false}
         >
           <form onSubmit={UpdateSubmitHandle}>
-            <Modal.Header closeButton>
+            <Modal.Header
+              closeButton
+              onClick={() => {
+                handleClose();
+                setTodoId("");
+              }}
+            >
               <Modal.Title>Update Todo</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -199,7 +205,13 @@ function AllTodos() {
               </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  handleClose();
+                  setTodoId("");
+                }}
+              >
                 Close
               </Button>
               <Button type="submit" variant="primary">

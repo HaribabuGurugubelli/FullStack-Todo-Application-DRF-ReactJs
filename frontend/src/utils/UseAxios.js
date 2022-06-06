@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import jwt_decode from "jwt-decode";
 const axios = require("axios");
 
-function Axios() {
+function UseAxios() {
   const baseURL = "http://127.0.0.1:8000";
 
   var access_token = localStorage.getItem("access");
@@ -45,4 +45,4 @@ function Axios() {
   return axiosInstance;
 }
 
-export default Axios;
+export default UseAxios;

@@ -1,0 +1,10 @@
+.heading {
+    text-align: center
+}
+
+.login-wrapper {
+    /* margin-top: 15vh; */
+    width: 30%;
+    border: 1px solid gray;
+    border-radius: 10px;
+}

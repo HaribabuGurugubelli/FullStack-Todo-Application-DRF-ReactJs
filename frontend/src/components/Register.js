@@ -1,3 +1,4 @@
+import "../style.css";
 import React, { useState } from "react";
 const axios = require("axios");
 
@@ -21,64 +22,83 @@ function Register() {
 
   const registerRequest = () => {
     axios
-      .post(`http://127.0.0.1:8000/user_login/`, { ...data })
+      .post(`http://127.0.0.1:8000/user_registration/`, { ...data })
       .then((response) => {
-        if (response.status === 200) {
-          localStorage.setItem("access", response.data.access);
-          localStorage.setItem("refresh", response.data.refresh);
+        if (response.status === 201) {
           window.location.href = "/";
         }
         console.log(response);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status) {
+          alert(`User Allready exists with this Mobile Number or Email Id.`);
+        }
+      });
   };
 
   return (
-    <div className="container w-50">
-      <div className="container w-50">
-        <form onSubmit={submitHanler}>
-          <div className="mb-3">
-            <input
-              type="text"
-              placeholder="Enter Mobile Number"
-              name="phone_number"
-              className="form-control"
-              onChange={changeHandler}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="email"
-              placeholder="Enter Email"
-              name="email"
-              className="form-control"
-              onChange={changeHandler}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              placeholder="Enter Full Name"
-              name="full_name"
-              className="form-control"
-              onChange={changeHandler}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              onChange={changeHandler}
-            />
-          </div>
-          <input
-            type="submit"
-            className=" btn btn-sm btn-warning"
-            value="SignUp"
-          />
-        </form>
+    <div className="container login-wrapper">
+      <div className="heading m-2">
+        <h3>Signup</h3>
+        <hr></hr>
       </div>
+      <form id="signupForm" onSubmit={submitHanler}>
+        <div className="mb-3">
+          <label htmlFor="full_name" className="form-label">
+            Full Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="full_name"
+            name="full_name"
+            placeholder="Your Name"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="Phone_number" className="form-label">
+            Mobile Number
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="Phone_number"
+            name="phone_number"
+            placeholder="Your Mobile Number"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email address
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="pwd" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="pwd"
+            name="password"
+            onChange={changeHandler}
+          />
+        </div>
+        <button type="submit" className="btn btn-lg btn-success mb-3">
+          Signup
+        </button>
+      </form>
     </div>
   );
 }

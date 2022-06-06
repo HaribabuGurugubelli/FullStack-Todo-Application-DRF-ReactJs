@@ -1,3 +1,4 @@
+import "../style.css";
 import React, { useState, useEffect } from "react";
 const axios = require("axios");
 
@@ -7,7 +8,7 @@ function Login() {
     password: "",
   });
 
-  const changeHandler = (e) => {
+  const ChangeHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -31,38 +32,39 @@ function Login() {
       .catch((error) => console.log(error));
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("refresh")) {
-      window.location.href = "/dashboard";
-    }
-  }, []);
-
   return (
-    <div className="container w-50">
-      <div className="container w-50">
+    <div className="container login-wrapper">
+      <div className="">
         <form onSubmit={submitHanler}>
           <div className="mb-3">
+            <label htmlFor="phone_number" className="form-label">
+              Mobile Number
+            </label>
             <input
               type="text"
-              placeholder="Enter Mobile Number"
-              name="phone_number"
               className="form-control"
-              onChange={changeHandler}
+              id="phone_number"
+              placeholder="Your Mobile Number"
+              name="phone_number"
+              onChange={ChangeHandler}
             />
           </div>
           <div className="mb-3">
+            <label htmlFor="pwd" className="form-label">
+              Password
+            </label>
             <input
               type="password"
-              name="password"
               className="form-control"
-              onChange={changeHandler}
+              id="pwd"
+              placeholder="************"
+              name="password"
+              onChange={ChangeHandler}
             />
           </div>
-          <input
-            type="submit"
-            value="Login"
-            className=" btn btn-sm btn-primary"
-          />
+          <button type="submit" className="btn btn-lg btn-success mb-3">
+            Login
+          </button>
         </form>
       </div>
     </div>
