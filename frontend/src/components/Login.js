@@ -29,12 +29,21 @@ function Login() {
         }
         console.log(response);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 401) {
+          window.alert("Invalid Mobile Number or Password.");
+        }
+      });
   };
 
   return (
     <div className="container login-wrapper">
       <div className="">
+        <div className="heading m-2">
+          <h3>Login</h3>
+          <hr></hr>
+        </div>
         <form onSubmit={submitHanler}>
           <div className="mb-3">
             <label htmlFor="phone_number" className="form-label">
@@ -66,6 +75,7 @@ function Login() {
             Login
           </button>
         </form>
+        <a href="/forgotpassword">Forgot Password...?</a>
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import Logout from "./components/Logout";
 import PageNotFound from "./components/errorPage/PageNotFound";
+import Profile from "./components/profile/Profile";
+import ForgotPassword from "./components/ForgotPassword";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -72,6 +74,15 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/forgotpassword"
+              element={
+                <>
+                  <Header />
+                  <ForgotPassword />
+                </>
+              }
+            />
           </Route>
           <Route element={<ProtectedRoute user={user} />}>
             <Route
@@ -80,6 +91,15 @@ function App() {
                 <>
                   <Header />
                   <Dashboard />
+                </>
+              }
+            />
+            <Route
+              path="/profile/:id"
+              element={
+                <>
+                  <Header />
+                  <Profile />
                 </>
               }
             />

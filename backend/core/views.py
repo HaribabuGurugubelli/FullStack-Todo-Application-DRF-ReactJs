@@ -1,4 +1,4 @@
-from pickle import PUT
+from logging import exception
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -10,6 +10,9 @@ from .models import *
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
+from rest_framework import generics
+from rest_framework.views import APIView
+from django.contrib.auth.hashers import make_password, check_password
 
 
 @api_view(['POST'])
@@ -36,7 +39,7 @@ class user_login(TokenObtainPairView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_all_users(request):
-    
+
     if request.method == 'GET':
         users_list = User.objects.all()
         serializer = AllUserSerializer(users_list, many=True)
@@ -106,3 +109,125 @@ def get_task_by_id(request, id):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
+def get_user_by_id(request, id):
+
+    # task = request.data
+    # print(task)
+
+    if request.method == 'GET':
+        user = User.objects.get(id=id)
+        serializer = GetUserSerializer(user)
+        if serializer:
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        user = User.objects.get(id=id)
+        serializer = GetUserSerializer(user, request.data)
+        if serializer.is_valid():
+            taskData = serializer.save()
+            if taskData:
+                print("Serializer is valid and data saved.")
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        else:
+            print("Invalid Serializer.")
+            return Response(serializer.errors)
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+
+            return Response(status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST', 'PUT'])
+@permission_classes([AllowAny])
+def forgot_password(request):
+
+    print(request.data)
+
+    if request.method == "POST":
+
+        try:
+            user = User.objects.get(phone_number=request.data["phone_number"])
+        except User.DoesNotExist:
+            return Response("User Doe's not Exist.", status=status.HTTP_404_NOT_FOUND)
+
+        if user:
+
+            return Response(status=status.HTTP_200_OK)
+
+        else:
+
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "PUT":
+
+        try:
+            user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist:
+            return Response("User Doe's not Exist.", status=status.HTTP_404_NOT_FOUND)
+
+        if user:
+            new_password = make_password(request.data["password"])
+            user.password = new_password
+            user.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        else:
+
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return Response("Forgot password Triggered", status=status.HTTP_201_CREATED)
+
+
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def forgot_password(request):
+
+#     print(request.data)
+
+#     if request.method == "POST":
+#         try:
+#             user = User.objects.get(phone_number=request.data["phone_number"])
+#         except User.DoesNotExist:
+#             return Response("User Doe's not Exist.", status=status.HTTP_404_NOT_FOUND)
+
+#         if user:
+#             new_password = make_password(request.data["password"])
+#             user.password = new_password
+#             user.save()
+#             return Response(status=status.HTTP_201_CREATED)
+
+#         else:
+#             print("Invalid User")
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     return Response("Forgot password Triggered", status=status.HTTP_201_CREATED)

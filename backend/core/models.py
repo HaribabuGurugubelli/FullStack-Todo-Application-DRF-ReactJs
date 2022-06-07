@@ -59,8 +59,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             'unique': _(
                 "A user is already registered with this email address"),
         },
-    )
-    phone_number = models.CharField(max_length=15, unique=True)
+        blank=True)
+    phone_number = models.CharField(max_length=15, unique=True, blank=True)
     full_name = models.CharField(
         max_length=30, verbose_name=_("full name"),
     )
@@ -85,6 +85,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     role = models.CharField(
         max_length=25, choices=Role, blank=True, null=True)
+
+    password = models.CharField(_('password'), max_length=128, blank=True)
 
     is_staff = models.BooleanField(
         verbose_name=_("staff status"),
