@@ -55,6 +55,8 @@ def get_all_tasks(request):
 
     if request.method == 'POST':
         serializer = TaskUpdateSerializer(data=request.data)
+        request.data['user'] = request.user.id
+
         if serializer.is_valid():
             task = serializer.save()
             if task:
@@ -63,7 +65,7 @@ def get_all_tasks(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'GET':
-        todos_list = Todos.objects.all()
+        todos_list = Todos.objects.filter(user_id=request.user.id)
         serializer = TaskSerializer(todos_list, many=True)
         if serializer:
             return Response(serializer.data)
@@ -171,8 +173,6 @@ class ChangePasswordView(generics.UpdateAPIView):
 @permission_classes([AllowAny])
 def forgot_password(request):
 
-    print(request.data)
-
     if request.method == "POST":
 
         try:
@@ -206,28 +206,3 @@ def forgot_password(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     return Response("Forgot password Triggered", status=status.HTTP_201_CREATED)
-
-
-# @api_view(['POST'])
-# @permission_classes([AllowAny])
-# def forgot_password(request):
-
-#     print(request.data)
-
-#     if request.method == "POST":
-#         try:
-#             user = User.objects.get(phone_number=request.data["phone_number"])
-#         except User.DoesNotExist:
-#             return Response("User Doe's not Exist.", status=status.HTTP_404_NOT_FOUND)
-
-#         if user:
-#             new_password = make_password(request.data["password"])
-#             user.password = new_password
-#             user.save()
-#             return Response(status=status.HTTP_201_CREATED)
-
-#         else:
-#             print("Invalid User")
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-
-#     return Response("Forgot password Triggered", status=status.HTTP_201_CREATED)

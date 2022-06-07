@@ -74,7 +74,7 @@ function Profile() {
   }, [id]);
 
   return (
-    <div className="container">
+    <div className="container w-50">
       <button className="btn btn-sm btn-warning float-end" onClick={handleShow}>
         Change Password
       </button>
@@ -82,7 +82,7 @@ function Profile() {
       <br></br>
       <form onSubmit={updateSubmitHandler}>
         <div className="row">
-          <div className="mb-3 col-md-4">
+          <div className="mb-3 col-md-6">
             <label htmlFor="email" className="form-label">
               Email address
             </label>
@@ -96,7 +96,7 @@ function Profile() {
               onChange={changeHandler}
             />
           </div>
-          <div className="mb-3 col-md-4">
+          <div className="mb-3 col-md-6">
             <label htmlFor="name" className="form-label">
               Name
             </label>
@@ -109,7 +109,7 @@ function Profile() {
               onChange={changeHandler}
             />
           </div>
-          <div className="mb-3 col-md-4">
+          <div className="mb-3 col-md-6">
             <label htmlFor="phone_number" className="form-label">
               Mobile Number
             </label>
@@ -122,18 +122,20 @@ function Profile() {
               onChange={changeHandler}
             />
           </div>
-          <div className="mb-3 col-md-4">
+          <div className="mb-3 col-md-6">
             <label htmlFor="gender" className="form-label">
               Gender
             </label>
-            <input
-              type="text"
-              className="form-control"
-              id="gender"
-              value={userData.gender}
+            <select
+              class="form-select"
               name="gender"
+              aria-label="Default select example"
               onChange={changeHandler}
-            />
+            >
+              <option selected>{userData.gender}</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
           </div>
         </div>
         <button className="btn btn-warning m-4">Update</button>

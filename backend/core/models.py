@@ -62,17 +62,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True)
     phone_number = models.CharField(max_length=15, unique=True, blank=True)
     full_name = models.CharField(
-        max_length=30, verbose_name=_("full name"),
+        max_length=30, verbose_name=_("full name"), blank=True
     )
-    GENDER_MALE = 'M'
-    GENDER_FEMALE = 'F'
     GENDER_CHOICES = [
-        (GENDER_MALE, _("Male")),
-        (GENDER_FEMALE, _("Female")),
+        ("male", "Male"),
+        ("female", "Female"),
     ]
 
     gender = models.CharField(
-        max_length=1, blank=True, choices=GENDER_CHOICES,
+        max_length=6, blank=True, choices=GENDER_CHOICES,
         verbose_name=_("gender"),
     )
     address = models.TextField(max_length=255, null=True, blank=True)
