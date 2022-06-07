@@ -27,13 +27,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return instance
 
 
-class RoleSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Roles
-        fields = '__all__'
-
-
 class UserLoginSerializer(TokenObtainPairSerializer):
     @classmethod
     # role = RoleSerializer()
@@ -46,7 +39,7 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         token['phone_number'] = user.phone_number
         token['full_name'] = user.full_name
         # token['role'] = RoleSerializer()
-        token['role'] = user.role_id
+        token['role'] = user.role
         # ...
 
         return token

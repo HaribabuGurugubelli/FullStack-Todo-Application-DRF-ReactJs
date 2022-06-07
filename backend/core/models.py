@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+
 class UserManager(BaseUserManager):
 
     use_in_migrations = True
@@ -35,13 +36,6 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class Roles(models.Model):
-    role = models.CharField(max_length=55)
-
-    def __str__(self):
-        return self.role
-
-
 class User(AbstractBaseUser, PermissionsMixin):
     """PermissionsMixin contains the following fields:
         - `is_superuser`
@@ -58,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         # `db_table` is only needed if you move from the existing default
         # User model to a custom one. This enables to keep the existing data.
-    
+
     email = models.EmailField(
         verbose_name=_("email address"), unique=True,
         error_messages={
@@ -76,15 +70,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         (GENDER_MALE, _("Male")),
         (GENDER_FEMALE, _("Female")),
     ]
-        
+
     gender = models.CharField(
         max_length=1, blank=True, choices=GENDER_CHOICES,
         verbose_name=_("gender"),
     )
     address = models.TextField(max_length=255, null=True, blank=True)
 
-    role = models.ForeignKey(Roles, on_delete=models.DO_NOTHING, blank=True, null=True)
-    
+    Role = (
+        ("client", "Client"),
+        ("agent", "Agent"),
+        ("admin", "Admin"),
+    )
+
+    role = models.CharField(
+        max_length=25, choices=Role, blank=True, null=True)
+
     is_staff = models.BooleanField(
         verbose_name=_("staff status"),
         default=False,
@@ -118,7 +119,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Todos(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True)
     todo = models.CharField(max_length=255)
 
     def __str__(self):
