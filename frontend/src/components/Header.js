@@ -34,7 +34,13 @@ function Header() {
             <div>
               <i className="fa-solid fa-book-open-reader fa-4x"></i>
             </div>
-            <div>{user ? <h3>Welcome {user.full_name}</h3> : null}</div>
+            <div>
+              {user ? (
+                <h3>Welcome {user.full_name}</h3>
+              ) : (
+                <h3>Todo Application [DRF & ReactJs]</h3>
+              )}
+            </div>
             <div className="navbar-nav ">
               {user ? (
                 <>
