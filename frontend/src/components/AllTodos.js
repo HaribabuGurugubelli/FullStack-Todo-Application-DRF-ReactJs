@@ -134,44 +134,50 @@ function AllTodos() {
           </button>
         </div>
       </form>
-      <table className="table table-bordered table-striped table-hover w-50 container">
-        <thead>
-          <tr>
-            <th scope="col">S.No</th>
-            <th scope="col">Todo</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {todos.map((todo) => (
-            <tr key={todo.id}>
-              <td>{todo.id}</td>
-              <td>{todo.todo}</td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-warning btn-sm"
-                  onClick={() => {
-                    setTodoId(todo.id);
-                  }}
-                >
-                  Update
-                </button>
-                <span className="mx-2"></span>
-                <button
-                  type="button"
-                  className="btn btn-danger btn-sm"
-                  onClick={() => {
-                    setDelTodoId(todo.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <table className="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Todo</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {todos.map((todo) => (
+                <tr key={todo.id}>
+                  <td>{todo.id}</td>
+                  <td>{todo.todo}</td>
+                  <td>
+                    <div className="d-flex">
+                      <button
+                        type="button"
+                        className="btn btn-warning btn-sm"
+                        onClick={() => {
+                          setTodoId(todo.id);
+                        }}
+                      >
+                        Update
+                      </button>
+                      <span className="mx-2"></span>
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={() => {
+                          setDelTodoId(todo.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div>
         <Modal
           show={show}

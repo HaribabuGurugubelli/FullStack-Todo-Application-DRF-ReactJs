@@ -52,6 +52,13 @@ class GetUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserProfilePicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'image']
+
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:

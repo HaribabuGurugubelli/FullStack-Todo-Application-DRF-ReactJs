@@ -12,6 +12,8 @@ function UseAxios() {
     baseURL,
     headers: {
       Authorization: `Bearer ${access_token}`,
+      "Content-Type": "application/json",
+      accept: "application/json",
     },
   });
 

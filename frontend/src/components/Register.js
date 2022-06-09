@@ -8,6 +8,7 @@ function Register() {
     password: "",
     email: "",
     full_name: "",
+    role: "client",
   });
 
   const changeHandler = (e) => {

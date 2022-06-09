@@ -3,6 +3,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import *
 
 
@@ -12,6 +14,8 @@ urlpatterns = [
     path('user_registration/', user_registration, name='user_registration'),
     path('change_password/', ChangePasswordView.as_view(), name='change_password'),
     path('forgot_password/', forgot_password, name='forgot_password'),
+    path('upload_profile_image/', upload_profile_image,
+         name='upload_profile_image'),
 
 
     path('get_all_users/', get_all_users, name='get_all_users'),
@@ -20,3 +24,6 @@ urlpatterns = [
     path('get_user_by_id/<int:id>/', get_user_by_id, name='get_user_by_id'),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL,
+                      document_root=settings.MEDIA_ROOT)

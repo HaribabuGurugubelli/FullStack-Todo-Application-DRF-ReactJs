@@ -4,6 +4,8 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+import datetime
+import os
 
 
 class UserManager(BaseUserManager):
@@ -34,6 +36,13 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(email, password, **extra_fields)
+
+
+def upload_to(instance, filename):
+    old_filename = filename
+    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
+    new_filename = "%s%s" % (timeNow, old_filename)
+    return 'profile-photos/{filename}'.format(filename=new_filename)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -85,6 +94,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=25, choices=Role, blank=True, null=True)
 
     password = models.CharField(_('password'), max_length=128, blank=True)
+
+    image = models.FileField(
+        _("Image"), upload_to=upload_to, blank=True, null=True)
 
     is_staff = models.BooleanField(
         verbose_name=_("staff status"),
